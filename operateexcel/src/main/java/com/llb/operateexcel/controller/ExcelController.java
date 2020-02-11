@@ -59,7 +59,7 @@ public class ExcelController {
 
                 if("xlsx".equals(fileType) || "xls".equals(fileType) ) {
                     //根据文件名来获取改文件的月份
-                    String qnDate = new MonthUtil().getMonth(file.getOriginalFilename());
+                    String qmDate = new MonthUtil().getMonth(file.getOriginalFilename());
                     //签名日期时间
                     //                String qnDate = "2019/"+ month++ +"/1";
 
@@ -69,10 +69,10 @@ public class ExcelController {
                             isFirst = false;
                             destFile = destFile+file.getOriginalFilename();
                             file.transferTo(new File(destFile));
-                            new ExcelUtil().changeExcel(destFile, ksName);
+                            new ExcelUtil().changeExcel(destFile, ksName, qmDate);
                         } else {
                             file.transferTo(new File(sourceFile));
-                            new ExcelUtil().importFromExcel(sourceFile, destFile, ksName, qnDate);
+                            new ExcelUtil().importFromExcel(sourceFile, destFile, ksName, qmDate);
                         }
                         request.setAttribute("msg", "合并成功，保存文件在:"+destFile);
                     } catch (Exception e) {

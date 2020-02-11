@@ -123,7 +123,7 @@ public class ExcelUtil {
 
             //获取最后一行
             int nums = sheet.getLastRowNum();
-            for (int i = 1; i < nums; i++) {
+            for (int i = 1; i <= nums; i++) {
                 //获取行
                 Row row = sheet.getRow(i);
                 if(row == null) {
@@ -132,8 +132,6 @@ public class ExcelUtil {
                     continue;
                 }
                 Cell cell = row.getCell(0);
-//                cell.setCellType(CellType.STRING);
-                /*String value = row.getCell(0).getStringCellValue();*/
                 if(cell == null || "".equals(cell)) {
                     nums = i;
                     System.out.println("执行了");
@@ -142,7 +140,7 @@ public class ExcelUtil {
             }
             //保存到新建的工作表
             int nums1 = saveSheet.getLastRowNum();
-            for (int i = 0; i < nums1; i++) {
+            for (int i = 0; i <= nums1; i++) {
                 //获取行
                 Row row = saveSheet.getRow(i);
                 if(row == null) {
@@ -151,8 +149,6 @@ public class ExcelUtil {
                     continue;
                 }
                 Cell cell = row.getCell(0);
-//                row.getCell(0).setCellType(CellType.STRING);
-//                String value = row.getCell(0).getStringCellValue();
                 if(null == cell) {
                     nums1 = i;
                     System.out.println("执行了saveFile");
@@ -182,65 +178,70 @@ public class ExcelUtil {
             System.out.println("记录数为：" + nums);
 
             //获取表格内容的行号
-            for (int i = 1; i < nums; i++) {
+            for (int i = 1; i <= nums; i++) {
                 //获取行
                 Row row = sheet.getRow(i);
                 if(row == null) {
                    break;
                 }
 
-                Row row1 = saveSheet.createRow(nums1++);
+                //创建下一条数据
+                Row row1 = saveSheet.createRow(++nums1);
 
                 //获取总列数
                 int colums = sheet.getRow(0).getPhysicalNumberOfCells();
 
-                for (int j = 0; j < colums; j++) {
+                for (int j = 0; j <= colums; j++) {
 //                    System.out.println(j);
-                    if(row.getCell(j) == null || row.getCell(0) == null|| "".equals(row.getCell(0))) {
-                        Cell cell = row.createCell(j);
+                    Cell cell = row.getCell(j);
+                    /*if(cell == null || row.getCell(0) == null|| "".equals(row.getCell(0))) {
+                        cell = row.createCell(j);
                         cell.setCellType(CellType.STRING);
-                        //判断是否是科室或者是签名日期时间列
-                        if(j == ksColum) {
+                    }*/
+                    if(cell == null) {
+                        cell = row.createCell(j);
+                        cell.setCellType(CellType.STRING);
+                    }
 
-                            //保存到新的工作表中
-                            Cell cell1 = row1.createCell(j);
-                            //获取单元格大小
-                            int columnWidth = cell.getSheet().getColumnWidth(j);
-                            short height = cell.getRow().getHeight();
-                            //设置字体大小
-                            Font font = saveWb.createFont();
-                            font.setFontName("宋体");
-                            font.setFontHeightInPoints((short)11);
-                            cell1.getCellStyle().setFont(font);
-                            cell1.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
-                            cell1.getSheet().setColumnWidth(j, columnWidth);
-                            cell1.getRow().setHeight(height);
+                    if(j == ksColum) {
 
-                            cell1.setCellValue(ksName);
+                        //保存到新的工作表中
+                        Cell cell1 = row1.createCell(j);
+                        //获取单元格大小
+                        int columnWidth = cell.getSheet().getColumnWidth(j);
+                        short height = cell.getRow().getHeight();
+                        //设置字体大小
+                        Font font = saveWb.createFont();
+                        font.setFontName("宋体");
+                        font.setFontHeightInPoints((short)11);
+                        cell1.getCellStyle().setFont(font);
+                        cell1.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
+                        cell1.getSheet().setColumnWidth(j, columnWidth);
+                        cell1.getRow().setHeight(height);
 
-                            System.out.println(ksName);
-                        } else if(j == qmDateColum) {
-                            //保存到新的工作表中
-                            Cell cell1 = row1.createCell(j);
-                            //获取单元格大小
-                            int columnWidth = cell.getSheet().getColumnWidth(j);
-                            short height = cell.getRow().getHeight();
-                            //设置字体大小
-                            Font font = saveWb.createFont();
-                            font.setFontName("宋体");
-                            font.setFontHeightInPoints((short)11);
-                            cell1.getCellStyle().setFont(font);
-                            cell1.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
-                            cell1.getSheet().setColumnWidth(j, columnWidth);
-                            cell1.getRow().setHeight(height);
+                        cell1.setCellValue(ksName);
 
-                            cell1.setCellValue(qnDate);
+                        System.out.print(ksName+ "=============");
+                    } else if(j == qmDateColum) {
+                        //保存到新的工作表中
+                        Cell cell1 = row1.createCell(j);
+                        //获取单元格大小
+                        int columnWidth = cell.getSheet().getColumnWidth(j);
+                        short height = cell.getRow().getHeight();
+                        //设置字体大小
+                        Font font = saveWb.createFont();
+                        font.setFontName("宋体");
+                        font.setFontHeightInPoints((short)11);
+                        cell1.getCellStyle().setFont(font);
+                        cell1.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
+                        cell1.getSheet().setColumnWidth(j, columnWidth);
+                        cell1.getRow().setHeight(height);
 
-                            System.out.println(qnDate);
-                        }
-                        continue;
+                        cell1.setCellValue(qnDate);
+
+                        System.out.println(qnDate);
                     } else {
-                        Cell cell = row.getCell(j);
+//                        Cell cell = row.getCell(j);
                         //获取单元格大小
                         int columnWidth = cell.getSheet().getColumnWidth(j);
                         short height = cell.getRow().getHeight();
@@ -261,9 +262,9 @@ public class ExcelUtil {
 
                         cell1.setCellValue(value);
 
-//                        System.out.println(value);
-
+                        //                        System.out.println(value);
                     }
+
                 }
             }
 
@@ -315,10 +316,10 @@ public class ExcelUtil {
     }
 
     /**
-     * 补全第一张表的格式数据
+     * 补全表的格式数据(科室名称，签名日期时间)
      * @param destPath
      */
-    public void changeExcel(String destPath, String ksName) {
+    public void changeExcel(String destPath, String ksName, String qmDate) {
         File file = new File(destPath);
         if(!file.exists()) {
             try {
@@ -395,7 +396,7 @@ public class ExcelUtil {
             System.out.println("总记录数:" + nums);
 
             //获取表格内容的行号
-            for (int i = 1; i < nums; i++) {
+            for (int i = 1; i <= nums; i++) {
                 //获取行
                 Row row = sheet.getRow(i);
                 if(row == null) {
@@ -404,7 +405,7 @@ public class ExcelUtil {
                 //获取总列数
                 int colums = sheet.getRow(0).getPhysicalNumberOfCells();
 
-                for (int j = 0; j < colums; j++) {
+                for (int j = 0; j <= colums; j++) {
 
                     if(row.getCell(j) == null || row.getCell(0) == null|| "".equals(row.getCell(0))) {
                         Cell cell = row.createCell(j);
@@ -428,7 +429,7 @@ public class ExcelUtil {
 
                             cell1.setCellValue(ksName);
 
-                            System.out.println(ksName);
+                            System.out.print(ksName + "==============");
                         } else if(j == qmDateColum) {
                             //保存到新的工作表中
                             Cell cell1 = row.createCell(j);
@@ -444,9 +445,9 @@ public class ExcelUtil {
                             cell1.getSheet().setColumnWidth(j, columnWidth);
                             cell1.getRow().setHeight(height);
 
-                            cell1.setCellValue("2019/7/1");
+                            cell1.setCellValue(qmDate);
 
-                            System.out.println("2019/7/1");
+                            System.out.println(qmDate);
                         }
                     }
                 }
