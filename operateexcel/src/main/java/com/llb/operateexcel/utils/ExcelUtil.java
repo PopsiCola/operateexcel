@@ -181,8 +181,15 @@ public class ExcelUtil {
             for (int i = 1; i <= nums; i++) {
                 //获取行
                 Row row = sheet.getRow(i);
+                //判断改行是否有数据，而且是否为实例行
                 if(row == null) {
                    break;
+                } else {
+                    Cell cell = row.getCell(0);
+                    cell.setCellType(CellType.STRING);
+                    if("实例".equals(cell.getStringCellValue())) {
+                        continue;
+                    }
                 }
 
                 //创建下一条数据
@@ -241,7 +248,6 @@ public class ExcelUtil {
 
                         System.out.println(qnDate);
                     } else {
-//                        Cell cell = row.getCell(j);
                         //获取单元格大小
                         int columnWidth = cell.getSheet().getColumnWidth(j);
                         short height = cell.getRow().getHeight();
