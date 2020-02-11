@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>上传</title>
+</head>
+<body>
+<p th:text="${msg}" style="color: red"></p>
+<!--<a th:href="${downfile}" th:download="${downfile}"><p th:text="${down}" style="color: red"></p></a>-->
+
+<p>上传合并excel</p>
+<p>注意：批量上传文件时，需要将文件名添加月份进行区分，例如 1我的excel.xls。代表一月份。</p>
+<!-- 测试文件上传和下载 -->
+<form action="merge"
+      method="post" enctype="multipart/form-data">
+    <p>选择你要合并的excel:<input type="file" name="excels" multiple="true"/></p>
+    <input type="hidden" id="directory1" name="directory"/>
+    <p>请输入科室名称：<input type="text" id="ksName" name="ksName"/></p>
+    <p> <input type="submit" value="上传"> </p>
+</form>
+
+
+</body>
+</html>
